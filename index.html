@@ -1,51 +1,213 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trupti's Landing Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 40px 0;
-            text-align: center;
-        }
-        header {
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .about {
-            font-size: 1.25rem;
-            color: #555;
-        }
-        footer {
-            margin-top: 40px;
-            font-size: 1rem;
-            color: #333;
-        }
-    </style>
+	<title>My Portfolio</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="css/superslides.css">
+	<link rel="stylesheet" type="text/css" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" />
+
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            Welcome to My Website
-        </header>
-        <div class="about">
-            <p>Hello, I'm Trupti. I'm a Software Engineer, and this is my personal website.</p>
-            <p>Feel free to check out my CV below:</p>
-            <a href="https://truptilone.github.io/TruptiCV.pdf" target="_blank">Download My CV</a>
+
+	<div class="loader">
+		<div class="inner"></div>
+	</div>
+
+	 <!--<div id="slides">
+
+		<div class="overlay"></div>
+
+		<div class="slides-container">
+		    <img src="img/slide1.jpg" alt="">
+		    <img src="img/slide2.jpeg" alt="">
+		    <img src="img/slide3.jpeg" alt="">
+		</div>
+
+		<div class="titleMessage">
+			<div class="heading">
+				<p class="main">REECE KENNEY</p>
+				<p class="sub typed"></p>
+			</div>
+		</div>-->
+
+
+		<nav class="slides-navigation">
+		    <a href="#" class="next"></a>
+		    <a href="#" class="prev"></a>
+		</nav>
+
+
+	</div>
+
+
+	<nav id="navigation" class="navbar navbar-expand-lg">
+	  <a class="navbar-brand" href="index.html">Trupti Lone</a>
+
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarNav">
+	    <ul class="navbar-nav">
+	      <li class="nav-item active">
+	        <a class="nav-link" href="#about">About <span class="sr-only">(current)</span></a>
+	      </li>
+		
+		  <!--<li class="nav-item">
+	        <a class="nav-link" href="#skills">Skills</a>
+	      </li>
+		  <li class="nav-item">
+	        <a class="nav-link" href="#github">Github</a>
+	      </li>
+		  <li class="nav-item">
+	        <a class="nav-link" href="#contact">Contact</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#stats">Stats</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#contact">Contact</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#portfolio">Portfolio</a>
+	      </li>--> 
+	    </ul>
+	  </div>
+
+	</nav>
+
+
+
+
+	<div id="about" class="section">
+
+		<div class="container">
+
+			<div class="row">
+
+				<div class="col-md-5">
+					<img class="aboutImage" src="img/about.jpg">
+				</div>
+
+				<div class="col-md-7">
+
+
+					<h4>My name is Trupti Lone</h4>
+
+					<p>Hi there! I'm Trupti Lone from Santa Clara, California. 
+						I am currently pursuing a Master’s degree in Information Systems at Santa Clara University, where I focus on courses such as Data Analytics, Natural Language Processing, Object Oriented Programming and Database Management. 
+						Previously, I have completed my Master’s in Information Technology from MIT Pune University, specializing in 
+						Service-Oriented Architecture and Data Structures, and a Bachelor’s in Computer Science from Visvesvaraya Technological University.
+						
+						<p>I am actively seeking software engineering opportunities where I can apply my expertise in software development while leveraging the latest technologies like Machine Learning (ML) and Artificial Intelligence (AI) to solve real-world challenges and drive innovation.</p>
+						
+					</p>
+		
+					<p>Beyond academics and technology, I am deeply interested in the arts, particularly painting, where I find creative expression and inspiration. I am also passionate about exploring and learning emerging technologies, constantly seeking opportunities to bridge creativity and innovation in my work. </p>
+					<div>
+						<a href="https://truptilone.github.io/TruptiCV.pdf" class="resume-button" target="_blank">My Resume</a>
+						
+					</div>
+					<div class="social-links">
+						<!-- LinkedIn -->
+						<a href="https://www.linkedin.com/in/trupti-lone" class="social-icon linkedin" target="_blank" title="LinkedIn">
+							<i class="fab fa-linkedin fa-2x"></i>
+						</a>
+						 <!-- GitHub Icon -->
+						 <a href="https://github.com/TruptiLone" class="social-icon github" target="_blank" title="GitHub">
+							<i class="fab fa-github fa-2x"></i> <!-- GitHub icon with 5x size -->
+						</a>
+						<a href="https://www.salesforce.com/trailblazer/truptilone" class="social-icon salesforce" target="_blank" title="Salesforce">
+							<i class="fas fa-cloud fa-2x"></i> <!-- Cloud icon with 5x size -->
+						</a>
+					</div>
+				
+
+				</div>
+				
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	
+	
+	<div class="projects-container">
+        <h1>GitHub Projects</h1>
+        
+        <div class="project-card">
+            <h2>Data Analytics Project</h2>
+            <p class="project-description">This project is based on a dataset obtained from Kaggle: Airbnb Open Data. The dataset contains information on over 100,000 Airbnb listings, capturing details such as location, room type, price, host verification, and review metrics.
+			</p>
+            <a href="https://github.com/TruptiLone/data-analytics" target="_blank" class="project-link">View Project on GitHub</a>
         </div>
-        <footer>
-            <p>Thank you for visiting my page!</p>
-        </footer>
+
+        <div class="project-card">
+            <h2>Salesforce Project</h2>
+            <p class="project-description">Description of the project goes here. Explain what the project is about and its features.</p>
+            <a href="https://github.com/username/project2" target="_blank" class="project-link">View Project on GitHub</a>
+        </div>
+
+        <div class="project-card">
+            <h2>Event Planner Integration with Google Calendar</h2>
+            <p class="project-description">Developed an event planner application with a Java microservice on AWS to manage tasks, sync events with Google Calendar via OAuth, and use MySQL as the backend.</p>
+            <a href="https://github.com/TruptiLone/TaskPlanner" target="_blank" class="project-link">View Project on GitHub</a>
+        </div>
+		<div class="project-card">
+            <h2>Object Oriented Programming</h2>
+            <p class="project-description">A comprehensive repository showcasing the core principles and applications of Object-Oriented Programming (OOP) with real-world examples and code implementations.</p>
+            <a href="https://github.com/TruptiLone/Java-OOPS" target="_blank" class="project-link">View Project on GitHub</a>
+        </div>
+		<div class="project-card">
+            <h2>Data Structure and Algorithm</h2>
+            <p class="project-description">A collection of fundamental data structures and algorithms with implementations, optimized for efficiency and problem-solving.</p>
+            <a href="https://github.com/TruptiLone/DataStructure" target="_blank" class="project-link">View Project on GitHub</a>
+        </div>
     </div>
+	
+
+<!--
+	<div id="contact" class="contactSection section">
+
+		<div class="col-md-12 text-center">
+
+			<p class="subHeading">Like what you see?<p
+			<h2>I'd love to hear from you!</h2>
+			<a href="mailTo:lonetrupti@gmail.com" class="contactButton">GET IN TOUCH!</a>
+
+		</div>
+	
+
+	</div> 
+-->
+
+
+	
+
+	<script src="js/countUp.js"></script>
+	<script src="js/countUp-jquery.js"></script>
+	<script src="js/jquery.superslides.min.js"></script>
+	<script src="js/jquery.easypiechart.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/typed.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="https://unpkg.com/isotope-layout@3.0.5/dist/isotope.pkgd.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+
+	<script src="js/script.js"></script>
+
 </body>
 </html>
