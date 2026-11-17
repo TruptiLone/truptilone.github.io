@@ -2,85 +2,64 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>AI-Powered Medical Note-Taking: System Design Case Study</title>
+<title>AI-Powered Medical Note-Taking: System Design Document</title>
 <style>
-  @page { size: Letter; margin: 0.45in 0.5in; }
-  :root { --ink:#25231f; --muted:#5f5a51; --line:#cec5b6; --accent:#9a5c40; --cream:#faf6ee; --ai:#f3e6dc; }
+  @page { size: Letter; margin: 0.7in 0.85in; }
+  :root { --ink:#1f1d1a; --muted:#5f5a51; --line:#cec5b6; --accent:#9a5c40; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #fff; }
-  body { font: 10.4px/1.45 -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--ink); width: 7.5in; }
+  body { font: 11.3px/1.55 Georgia, "Times New Roman", serif; color: var(--ink); width: 6.8in; }
   a { color: var(--accent); text-decoration: none; }
-  .kicker { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
-  header { border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 10px; }
-  h1 { font: 700 23px/1.15 Georgia, "Times New Roman", serif; margin: 3px 0 4px; letter-spacing: -.01em; }
-  .sub { font-size: 11.5px; color: var(--muted); }
-  .meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; font-size: 9.4px; color: var(--muted); }
-  .status { border: 1px solid var(--accent); background: var(--cream); padding: 6px 9px; margin-bottom: 10px; font-size: 9.8px; }
-  .status b { color: var(--accent); }
-  h2 { font: 700 13px/1.2 Georgia, "Times New Roman", serif; margin-bottom: 5px; padding-bottom: 3px; border-bottom: 1px solid var(--line); }
-  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 11px; }
-  p + p { margin-top: 5px; }
-  ol, ul { padding-left: 15px; }
-  li + li { margin-top: 2px; }
-  .diagram { margin-bottom: 11px; }
-  .legend { display: flex; gap: 14px; font-size: 9px; color: var(--muted); margin-top: 3px; }
+  header { text-align: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--ink); }
+  .kicker { font: 700 9px/1 -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+  h1 { font: 700 22px/1.2 Georgia, "Times New Roman", serif; margin: 7px 0 4px; }
+  .sub { font-style: italic; color: var(--muted); font-size: 11.5px; }
+  h2 { font: 700 12.5px/1.3 Georgia, "Times New Roman", serif; margin: 15px 0 5px; }
+  h2 .n { color: var(--accent); margin-right: 6px; }
+  p { text-align: justify; hyphens: auto; }
+  p + p { margin-top: 6px; }
+  ul { padding-left: 18px; margin-top: 5px; }
+  li { text-align: justify; }
+  li + li { margin-top: 3px; }
+  figure { margin: 8px 0 2px; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { font-size: 9.8px; color: var(--muted); margin-top: 6px; text-align: center; }
+  figcaption b { color: var(--ink); }
+  .legend { display: flex; justify-content: center; gap: 16px; font: 9px/1 -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--muted); margin-top: 6px; }
   .sw { display: inline-block; width: 11px; height: 9px; vertical-align: -1px; margin-right: 4px; border: 1.2px solid var(--ink); }
-  table { width: 100%; border-collapse: collapse; font-size: 9.6px; }
-  th, td { text-align: left; vertical-align: top; padding: 3px 6px 3px 0; border-bottom: 1px solid #e6dfd3; }
-  th { font-weight: 700; width: 31%; }
-  footer { border-top: 2px solid var(--ink); padding-top: 6px; display: flex; justify-content: space-between; gap: 16px; font-size: 9.2px; color: var(--muted); }
+  footer { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 7px; font-size: 9.4px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; }
   footer b { color: var(--ink); }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="kicker">System Design Case Study</div>
+  <div class="kicker">System Design Document</div>
   <h1>AI-Powered Medical Note-Taking</h1>
-  <div class="sub">An ambient documentation assistant that turns a consented doctor–patient conversation into a structured, clinician-approved visit note.</div>
-  <div class="meta">
-    <span>Group coursework · ISBA 2410 Information Systems Analysis &amp; Design · Santa Clara University · Dec 2025</span>
-    <span>Trupti Lone · <a href="https://truptilone.github.io/#medical-note-taking">truptilone.github.io</a></span>
-  </div>
+  <div class="sub">Turning a consented doctor–patient conversation into a structured, clinician-approved visit note</div>
 </header>
 
-<div class="status"><b>What this is:</b> a design proposal (requirements, UML models, wireframes and a proposed voice-AI architecture). It is <b>not</b> an implemented app: no deployed service, trained model, clinical validation or measured results. Benefits are hypotheses to test.</div>
+<h2><span class="n">1.</span>Problem</h2>
+<p>Writing notes competes with the clinician’s attention during a visit. Notes are typed while the patient is talking, or written from memory after hours, which costs time and risks missing details the patient actually said.</p>
 
-<div class="cols">
-  <section>
-    <h2>The pitch</h2>
-    <p><b>Problem.</b> Writing notes competes with the clinician’s attention during the visit. Notes get written from memory after hours, or typed while the patient is talking.</p>
-    <p><b>Proposal.</b> With the patient’s consent, capture the conversation and prepare an editable draft note. The clinician stays responsible for the record: nothing becomes final until they review and approve it.</p>
-    <p><b>Why it’s credible.</b> The design separates what the AI is good at (transcribing, drafting) from what people must own (consent, speaker roles, clinical judgment, approval), and every automated step has a manual fallback.</p>
-  </section>
-  <section>
-    <h2>What it does</h2>
-    <ol>
-      <li>Open the patient’s profile and history, then start a visit.</li>
-      <li>Ask for recording consent. If declined, document manually.</li>
-      <li>Record and upload the audio; transcribe it and separate who spoke when.</li>
-      <li>Draft three sections: <b>Patient Narrative</b>, <b>Doctor Assessment &amp; Plan</b>, <b>Visit Summary</b>, each linked to the transcript lines it came from.</li>
-      <li>Clinician compares the draft with its source, edits it and explicitly finalizes it.</li>
-      <li>Add typed notes or voice narration later; search past visits; share authorized summaries.</li>
-    </ol>
-  </section>
-</div>
+<h2><span class="n">2.</span>Proposed solution</h2>
+<p>With the patient’s consent, the system records the conversation, transcribes it, works out who said what, and prepares an editable draft note. The clinician stays responsible for the record: nothing becomes final until they review and approve it. The design separates what AI is good at (transcribing and drafting) from what people must own (consent, clinical judgment and approval), and every automated step has a manual fallback.</p>
 
-<section class="diagram">
-  <h2>Design: how a visit becomes an approved note</h2>
-  <svg viewBox="0 -6 720 242" width="720" height="242" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#25231f">
+<h2><span class="n">3.</span>System design</h2>
+<figure>
+  <svg viewBox="0 -6 720 276" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#1f1d1a">
     <defs>
-      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#25231f"/></marker>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f1d1a"/></marker>
       <marker id="arm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9a5c40"/></marker>
     </defs>
 
     <!-- Row 1 (left to right) -->
-    <g stroke="#25231f" stroke-width="1.2">
+    <g stroke="#1f1d1a" stroke-width="1.2">
       <rect x="0"   y="8" width="128" height="56" rx="4" fill="#fff"/>
       <rect x="148" y="8" width="128" height="56" rx="4" fill="#fff" stroke-dasharray="4 2.5"/>
       <rect x="296" y="8" width="128" height="56" rx="4" fill="#fff"/>
       <rect x="444" y="8" width="128" height="56" rx="4" fill="#f3e6dc"/>
-      <rect x="592" y="8" width="128" height="56" rx="4" fill="#fff" stroke-dasharray="4 2.5"/>
+      <rect x="592" y="8" width="128" height="56" rx="4" fill="#f3e6dc"/>
     </g>
     <g text-anchor="middle">
       <text x="64"  y="28" font-weight="700">1 · Open visit</text>
@@ -91,10 +70,10 @@
       <text x="360" y="42">Secure upload tied to</text><text x="360" y="54">this visit, verified</text>
       <text x="508" y="28" font-weight="700">4 · Speech AI</text>
       <text x="508" y="42">Speech-to-text +</text><text x="508" y="54">speaker diarization</text>
-      <text x="656" y="28" font-weight="700">5 · Confirm roles</text>
-      <text x="656" y="42">Align timestamps; label</text><text x="656" y="54">doctor / patient / other</text>
+      <text x="656" y="28" font-weight="700">5 · Assign roles</text>
+      <text x="656" y="42">Match saved doctor &amp;</text><text x="656" y="54">staff voice profiles</text>
     </g>
-    <g stroke="#25231f" stroke-width="1.2" marker-end="url(#ar)">
+    <g stroke="#1f1d1a" stroke-width="1.2" marker-end="url(#ar)">
       <line x1="128" y1="36" x2="147" y2="36"/>
       <line x1="276" y1="36" x2="295" y2="36"/>
       <line x1="424" y1="36" x2="443" y2="36"/>
@@ -108,13 +87,13 @@
     <rect x="222" y="94" width="128" height="20" rx="10" fill="#fff" stroke="#9a5c40" stroke-width="1"/>
     <text x="286" y="107.5" font-size="9" fill="#9a5c40" text-anchor="middle" font-weight="700">declined → manual draft</text>
 
-    <!-- AI processing boundary note -->
+    <!-- Processing note -->
     <text x="508" y="100" font-size="9" fill="#5f5a51" text-anchor="middle">Background worker; queue carries IDs,</text>
     <text x="508" y="112" font-size="9" fill="#5f5a51" text-anchor="middle">not clinical content. Any failure →</text>
     <text x="508" y="124" font-size="9" fill="#9a5c40" text-anchor="middle" font-weight="700">visible status + manual path</text>
 
     <!-- Row 2 (right to left) -->
-    <g stroke="#25231f" stroke-width="1.2">
+    <g stroke="#1f1d1a" stroke-width="1.2">
       <rect x="592" y="148" width="128" height="56" rx="4" fill="#f3e6dc"/>
       <rect x="444" y="148" width="128" height="56" rx="4" fill="#fff" stroke-dasharray="4 2.5"/>
       <rect x="296" y="148" width="128" height="56" rx="4" fill="#fff" stroke-width="2.2"/>
@@ -122,18 +101,18 @@
       <rect x="0"   y="148" width="128" height="56" rx="4" fill="#fff"/>
     </g>
     <g text-anchor="middle">
-      <text x="656" y="168" font-weight="700">6 · LLM draft</text>
-      <text x="656" y="182">3 sections, each linked</text><text x="656" y="194">to transcript lines</text>
+      <text x="656" y="168" font-weight="700">6 · LLM draft note</text>
+      <text x="656" y="182">3 sections; each line</text><text x="656" y="194">cites the transcript</text>
       <text x="508" y="168" font-weight="700">7 · Validate</text>
       <text x="508" y="182">Schema + source checks;</text><text x="508" y="194">saved as draft only</text>
       <text x="360" y="168" font-weight="700">8 · Clinician review</text>
-      <text x="360" y="182">Draft beside source;</text><text x="360" y="194">edit, then approve</text>
+      <text x="360" y="182">Draft beside source;</text><text x="360" y="194">fix roles, edit, approve</text>
       <text x="212" y="168" font-weight="700">9 · Final note</text>
       <text x="212" y="182">Versioned, read-only;</text><text x="212" y="194">fixes go in addenda</text>
       <text x="64"  y="168" font-weight="700">10 · Use it</text>
       <text x="64"  y="182">Visit history, search,</text><text x="64" y="194">authorized summaries</text>
     </g>
-    <g stroke="#25231f" stroke-width="1.2" marker-end="url(#ar)">
+    <g stroke="#1f1d1a" stroke-width="1.2" marker-end="url(#ar)">
       <line x1="592" y1="176" x2="573" y2="176"/>
       <line x1="444" y1="176" x2="425" y2="176"/>
       <line x1="296" y1="176" x2="277" y2="176"/>
@@ -141,7 +120,16 @@
     </g>
     <text x="286" y="143" font-size="8.5" fill="#5f5a51" text-anchor="middle">approve</text>
 
-    <text x="0" y="226" font-size="9" fill="#5f5a51">Audit log records who accessed or changed what. Retries never overwrite clinician edits or a final note; a stale approval is rejected.</text>
+    <!-- The 3 draft sections -->
+    <line x1="656" y1="204" x2="656" y2="216" stroke="#9a5c40" stroke-width="1.2"/>
+    <rect x="412" y="216" width="308" height="44" rx="4" fill="#fff" stroke="#9a5c40" stroke-width="1.2"/>
+    <text x="566" y="231" text-anchor="middle" font-size="9.5" font-weight="700" fill="#9a5c40">The 3 sections of the draft note</text>
+    <text x="566" y="245" text-anchor="middle" font-size="9.5">① Patient narrative: what the patient reported</text>
+    <text x="566" y="256" text-anchor="middle" font-size="9.5">② Doctor assessment &amp; plan  ③ Visit summary</text>
+
+    <text x="0" y="226" font-size="9" fill="#5f5a51">Audit log records who accessed</text>
+    <text x="0" y="238" font-size="9" fill="#5f5a51">or changed what. Retries never overwrite</text>
+    <text x="0" y="250" font-size="9" fill="#5f5a51">clinician edits or a final note.</text>
   </svg>
   <div class="legend">
     <span><span class="sw" style="background:#f3e6dc"></span>AI step</span>
@@ -149,35 +137,21 @@
     <span><span class="sw" style="border-width:2.2px"></span>Human decision</span>
     <span><span class="sw" style="border-color:#9a5c40;border-style:dashed"></span>Manual fallback</span>
   </div>
-</section>
+  <figcaption><b>Figure 1.</b> How a visit becomes an approved note. The AI only ever produces a draft; a clinician’s explicit approval is the only path to a final note.</figcaption>
+</figure>
 
-<div class="cols">
-  <section>
-    <h2>Key design decisions</h2>
-    <table>
-      <tr><th>Process after recording stops</th><td>The whole encounter is available before drafting; latency to be measured.</td></tr>
-      <tr><th>Keep transcription, diarization and roles separate</th><td>Words and speakers fail independently; a wrong speaker can turn a patient’s worry into a “diagnosis”.</td></tr>
-      <tr><th>Evidence-linked drafts</th><td>Every statement points to its source lines; missing info stays missing, never filled with “normal”.</td></tr>
-      <tr><th>Human approval of an exact version</th><td>A model response can never finalize a note.</td></tr>
-      <tr><th>Modular backend + worker</th><td>Handles long jobs without microservices; model providers stay swappable.</td></tr>
-    </table>
-  </section>
-  <section>
-    <h2>Risks designed for, and how to evaluate</h2>
-    <ul>
-      <li><b>Wrong words</b> (drug name, dose, negation) → targeted review flags; measure word error rate plus clinically significant errors.</li>
-      <li><b>Wrong speaker</b> (caregiver, interpreter) → role confirmation, “unknown” allowed; measure attribution accuracy.</li>
-      <li><b>Made-up or missing facts</b> → constrained sections, clinician approval; expert review of unsupported claims and omissions.</li>
-      <li><b>Prompt injection</b> (“ignore the template…” spoken aloud) → transcript treated as data; drafting has no tools.</li>
-      <li><b>Wrong patient / privacy</b> → immutable visit IDs, scoped access, minimal logs, retention policy.</li>
-      <li><b>Does it save time?</b> → time to approved note vs. manual, including review effort.</li>
-    </ul>
-  </section>
-</div>
+<h2><span class="n">4.</span>Challenge: telling the doctor and the patient apart</h2>
+<p>Speaker diarization splits the audio into anonymous voices (“Speaker A”, “Speaker B”) but cannot say which one is the doctor. Getting this wrong is serious: a patient’s “I think it’s my heart” could appear in the note as the doctor’s assessment.</p>
+<ul>
+  <li><b>Considered: separate microphones.</b> A clip-on mic for the doctor, or one mic per person, makes the loudest voice easy to label. It was set aside because it adds hardware to every exam room and reduces the clinician’s mobility during the visit.</li>
+  <li><b>Chosen: pre-configured voice profiles.</b> The doctor and clinic staff (nurses, assistants) each record a short voice sample once. After diarization, each speaker is matched against these saved profiles: a match is labelled doctor or staff, and other voices are labelled patient, or caregiver, interpreter or unknown when unclear. Profiles are stored with staff consent.</li>
+  <li><b>Final review.</b> The clinician sees each statement with its speaker during review and can correct a role, which updates the affected parts of the draft before approval.</li>
+</ul>
+<p style="margin-top:6px">Together, voice profiles and the clinician’s final review keep every statement attributed to the right person, without extra hardware in the room.</p>
 
 <footer>
-  <div><b>Team (Group 2):</b> Ankita Dhekane, Emily Ros, Himanshu Jangra, Kush Shah, Oliver Gonsalves, Riya Koduru, Trupti Lone · Prof. Xiang (Shawn) Wan. Architecture refinements added for this portfolio.</div>
-  <div style="white-space:nowrap;text-align:right"><b>Full case study</b><br><a href="https://github.com/TruptiLone/AI_Powered_Medical_Note_Taking_App">github.com/TruptiLone/AI_Powered_Medical_Note_Taking_App</a></div>
+  <div><b>Team:</b> Ankita Dhekane, Emily Ros, Himanshu Jangra, Kush Shah, Oliver Gonsalves, Riya Koduru, Trupti Lone · Santa Clara University · Dec 2025.</div>
+  <div style="white-space:nowrap;text-align:right"><b>Full design</b><br><a href="https://github.com/TruptiLone/AI_Powered_Medical_Note_Taking_App">github.com/TruptiLone/AI_Powered_Medical_Note_Taking_App</a></div>
 </footer>
 
 </body>
