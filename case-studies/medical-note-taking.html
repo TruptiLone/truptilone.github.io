@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <title>AI-Powered Medical Note-Taking: System Design Document</title>
 <style>
-  @page { size: Letter; margin: 0.7in 0.85in; }
+  @page { size: Letter; margin: 0.5in 0.85in; }
   :root { --ink:#1f1d1a; --muted:#5f5a51; --line:#cec5b6; --accent:#9a5c40; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #fff; }
-  body { font: 11.3px/1.55 Georgia, "Times New Roman", serif; color: var(--ink); width: 6.8in; }
+  body { font: 11px/1.5 Georgia, "Times New Roman", serif; color: var(--ink); width: 6.8in; }
   a { color: var(--accent); text-decoration: none; }
   header { text-align: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--ink); }
   .kicker { font: 700 9px/1 -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
   h1 { font: 700 22px/1.2 Georgia, "Times New Roman", serif; margin: 7px 0 4px; }
   .sub { font-style: italic; color: var(--muted); font-size: 11.5px; }
-  h2 { font: 700 12.5px/1.3 Georgia, "Times New Roman", serif; margin: 15px 0 5px; }
+  h2 { font: 700 12.5px/1.3 Georgia, "Times New Roman", serif; margin: 12px 0 4px; }
   h2 .n { color: var(--accent); margin-right: 6px; }
   p { text-align: justify; hyphens: auto; }
   p + p { margin-top: 6px; }
@@ -27,7 +27,7 @@
   figcaption b { color: var(--ink); }
   .legend { display: flex; justify-content: center; gap: 16px; font: 9px/1 -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--muted); margin-top: 6px; }
   .sw { display: inline-block; width: 11px; height: 9px; vertical-align: -1px; margin-right: 4px; border: 1.2px solid var(--ink); }
-  footer { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 7px; font-size: 9.4px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; }
+  footer { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 7px; font-size: 9.4px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; }
   footer b { color: var(--ink); }
 </style>
 </head>
@@ -67,7 +67,7 @@
       <text x="212" y="28" font-weight="700">2 · Consent?</text>
       <text x="212" y="42">Recorded before any</text><text x="212" y="54">audio is captured</text>
       <text x="360" y="28" font-weight="700">3 · Capture audio</text>
-      <text x="360" y="42">Secure upload tied to</text><text x="360" y="54">this visit, verified</text>
+      <text x="360" y="42">Dedicated in-room</text><text x="360" y="54">device; secure upload</text>
       <text x="508" y="28" font-weight="700">4 · Speech AI</text>
       <text x="508" y="42">Speech-to-text +</text><text x="508" y="54">speaker diarization</text>
       <text x="656" y="28" font-weight="700">5 · Assign roles</text>
@@ -140,14 +140,17 @@
   <figcaption><b>Figure 1.</b> How a visit becomes an approved note. The AI only ever produces a draft; a clinician’s explicit approval is the only path to a final note.</figcaption>
 </figure>
 
-<h2><span class="n">4.</span>Challenge: telling the doctor and the patient apart</h2>
+<h2><span class="n">4.</span>Design decision: a dedicated listening device</h2>
+<p>Audio is captured and handed off for processing by a dedicated in-room device rather than an existing clinic tablet. A separate device keeps concerns separate: it has one job, listening to the visit and sending the audio for processing, while the tablet stays free for charting and other work. A shared tablet may also be carried out of the room for other reasons, which would cut a recording short.</p>
+
+<h2><span class="n">5.</span>Challenge: telling the doctor and the patient apart</h2>
 <p>Speaker diarization splits the audio into anonymous voices (“Speaker A”, “Speaker B”) but cannot say which one is the doctor. Getting this wrong is serious: a patient’s “I think it’s my heart” could appear in the note as the doctor’s assessment.</p>
 <ul>
-  <li><b>Considered: separate microphones.</b> A clip-on mic for the doctor, or one mic per person, makes the loudest voice easy to label. It was set aside because it adds hardware to every exam room and reduces the clinician’s mobility during the visit.</li>
+  <li><b>Considered: separate microphones.</b> A clip-on mic for the doctor and one for the patient makes each voice easy to label. It was rejected because managing a microphone for the patient during an in-person visit can become overwhelming.</li>
   <li><b>Chosen: pre-configured voice profiles.</b> The doctor and clinic staff (nurses, assistants) each record a short voice sample once. After diarization, each speaker is matched against these saved profiles: a match is labelled doctor or staff, and other voices are labelled patient, or caregiver, interpreter or unknown when unclear. Profiles are stored with staff consent.</li>
   <li><b>Final review.</b> The clinician sees each statement with its speaker during review and can correct a role, which updates the affected parts of the draft before approval.</li>
 </ul>
-<p style="margin-top:6px">Together, voice profiles and the clinician’s final review keep every statement attributed to the right person, without extra hardware in the room.</p>
+<p style="margin-top:6px">Together, voice profiles and the clinician’s final review keep every statement attributed to the right person.</p>
 
 <footer>
   <div><b>Team:</b> Ankita Dhekane, Emily Ros, Himanshu Jangra, Kush Shah, Oliver Gonsalves, Riya Koduru, Trupti Lone · Santa Clara University · Dec 2025.</div>
